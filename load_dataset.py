@@ -33,10 +33,11 @@ def download_dataset(extract_dir, dataset_url):
         with TemporaryFile() as zf:
             http_get(dataset_url, zf)
             zf.seek(0)
+            print('Unzipping')
             with zipfile.ZipFile(zf, "r") as f:
                 members = f.namelist()
                 for zipinfo in tqdm(members):
-                    f._extract_member(zipinfo, None, None)
+                    f._extract_member(zipinfo, extract_dir, None)
 
     else:
         print('Extract dir already exists. Delete it to re-download.')
@@ -46,7 +47,7 @@ def get_dataframe(extract_dir: str, split_type: str):
     assert split_type in ('train', 'test')
     df = pd.read_csv(extract_dir + f'/glami-fashion-2022-{split_type}.csv')
     df[COL_NAME_IMAGE_FILE] = extract_dir + '/images/' + df[COL_NAME_IMAGE_ID].astype(str) + '.jpg'
-    assert os.path.exists(test_df.loc[0, COL_NAME_IMAGE_FILE])
+    assert os.path.exists(df.loc[0, COL_NAME_IMAGE_FILE])
     return df
 
 
