@@ -2,6 +2,7 @@ import os
 import zipfile
 from tempfile import TemporaryFile
 
+from tqdm import tqdm
 from transformers.file_utils import http_get
 
 import pandas as pd
@@ -29,10 +30,13 @@ def download_dataset(extract_dir, dataset_url):
     """
 
     if not os.path.exists(extract_dir):
-        with TemporaryFile('wb') as zf:
+        with TemporaryFile() as zf:
             http_get(dataset_url, zf)
+            zf.seek(0)
             with zipfile.ZipFile(zf, "r") as f:
-                f.extractall(extract_dir)
+                members = f.namelist()
+                for zipinfo in tqdm(members):
+                    f._extract_member(zipinfo, None, None)
 
     else:
         print('Extract dir already exists. Delete it to re-download.')
@@ -47,5 +51,6 @@ def get_dataframe(extract_dir: str, split_type: str):
 
 
 download_dataset(EXTRACT_DIR, DATASET_URL)
-test_df = get_dataframe(EXTRACT_DIR, 'test')
-train_df = get_dataframe(EXTRACT_DIR, 'train')
+dataset_dir = EXTRACT_DIR + '/glami-2022-dataset/'
+test_df = get_dataframe(dataset_dir, 'test')
+train_df = get_dataframe(dataset_dir, 'train')
