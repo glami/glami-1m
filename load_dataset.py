@@ -24,9 +24,12 @@ COL_NAME_LABEL_SOURCE = "label_source"
 
 def download_dataset(extract_dir, dataset_url):
     """
-    WARNING extraction require double size of the dataset ~ 20GB
+    WARNING extraction requires double size of the dataset ~ 20GB.
     Download unzip ideally while streaming, since the size is the same, on disk to a tmp folder or other folder selected.
     Open the test set, create image_path column with a file path.
+
+    The dataset is by default stored in linux TMP folder, so it will be removed on restart.
+    This at the same time prevets disk overflow.
     """
 
     if not os.path.exists(extract_dir):
