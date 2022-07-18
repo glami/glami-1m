@@ -54,7 +54,8 @@ def get_dataframe(extract_dir: str, split_type: str):
     return df
 
 
-download_dataset(EXTRACT_DIR, DATASET_URL)
-dataset_dir = EXTRACT_DIR + '/glami-2022-dataset/'
-test_df = get_dataframe(dataset_dir, 'test')
-train_df = get_dataframe(dataset_dir, 'train')
+if __name__ == "__main__":
+    download_dataset(EXTRACT_DIR, DATASET_URL)
+    dataset_dir = EXTRACT_DIR + '/glami-2022-dataset/'
+    test_df = get_dataframe(dataset_dir, 'test')
+    train_df = get_dataframe(dataset_dir, 'train')
