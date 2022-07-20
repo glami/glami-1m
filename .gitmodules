@@ -1,0 +1,3 @@
+[submodule "embracenet"]
+	path = embracenet
+	url = https://github.com/idearibosome/embracenet.git

@@ -7,6 +7,7 @@ import pandas as pd
 
 DATASET_URL = os.environ["DATASET_URL"]
 EXTRACT_DIR = os.environ.get("EXTRACT_DIR", "/tmp/glami-fashion-2022")
+MODEL_DIR = os.environ.get("MODEL_DIR", "/tmp/glami-fashion-2022/models")
 EMBS_DIR = EXTRACT_DIR + "/embs"
 
 COL_NAME_ITEM_ID = "item_id"
@@ -18,6 +19,8 @@ COL_NAME_GEO = "geo"
 COL_NAME_CATEGORY = "category"
 COL_NAME_CAT_NAME = "category_name"
 COL_NAME_LABEL_SOURCE = "label_source"
+COL_NAME_EMB_FILE = "emb_file"
+DEFAULT_IMAGE_SIZE = (298, 228)
 
 
 def download_dataset(extract_dir, dataset_url):
