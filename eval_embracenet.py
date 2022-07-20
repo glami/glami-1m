@@ -6,7 +6,8 @@ from load_dataset import (
     COL_NAME_CATEGORY,
     COL_NAME_LABEL_SOURCE,
 )
-from utils import EmbraceConfig, load_embracenet, EmbraceNetTrimodalClassifier, EmbraceDataset, calc_accuracy
+from embracenet_utils import EmbraceConfig, load_embracenet, EmbraceNetTrimodalClassifier, EmbraceDataset
+from utils import calc_accuracy
 import torch
 from torch.utils.data import DataLoader
 from tqdm import tqdm
