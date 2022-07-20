@@ -60,7 +60,6 @@ if __name__ == "__main__":
             losses.append(loss.cpu().detach().numpy())
 
             if (i_batch + 1) % SAVE_EVERY == 0:
-                print(f"Loss: {np.mean(losses)}")
                 save_embracenet(
                     np.mean(losses),
                     i_epoch,
@@ -71,7 +70,6 @@ if __name__ == "__main__":
                     i_batch,
                 )
 
-        print(f"Loss: {np.mean(losses)}")
         save_embracenet(
             np.mean(losses), i_epoch, embracenet.state_dict(), optimizer.state_dict(), label_binarizer, source_binarizer
         )

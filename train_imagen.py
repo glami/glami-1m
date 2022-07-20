@@ -41,8 +41,6 @@ if __name__ == "__main__":
 
             losses.append(loss)
             if (i_batch + 1) % SAVE_EVERY == 0:
-                print(f"Loss: {np.mean(losses)}")
                 save_imagen(np.mean(losses), i_epoch, imagen.state_dict(), trainer.state_dict(), i_batch)
 
-        print(f"Loss: {np.mean(losses)}")
         save_imagen(np.mean(losses), i_epoch, imagen.state_dict(), trainer.state_dict())
