@@ -5,6 +5,7 @@ from tqdm import tqdm
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 from ignite.metrics import Bleu
 from tabulate import tabulate
+from ignite.exceptions import NotComputableError
 
 from load_dataset import (
     download_dataset,
@@ -123,8 +124,11 @@ if __name__ == "__main__":
                         ([x.split() for x in right_generated], [[x.split()] for x in left_chunk.tolist()])
                     )
 
-                bleus[i, j] = top_bleu.compute().item()
-                bleus[j, i] = bottom_bleu.compute().item()
+                try:
+                    bleus[i, j] = top_bleu.compute().item()
+                    bleus[j, i] = bottom_bleu.compute().item()
+                except NotComputableError:
+                    pass
 
     print("Mean Bleu:")
     print(np.nansum(np.array(counts) * np.array(bleus)) / np.nansum(counts))
