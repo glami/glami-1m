@@ -7,6 +7,7 @@ import pandas as pd
 
 DATASET_URL = os.environ["DATASET_URL"]
 EXTRACT_DIR = os.environ.get("EXTRACT_DIR", "/tmp/glami-fashion-2022")
+EMBS_DIR = EXTRACT_DIR + "/embs"
 
 COL_NAME_ITEM_ID = "item_id"
 COL_NAME_IMAGE_ID = "image_id"
