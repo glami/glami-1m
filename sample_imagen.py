@@ -35,7 +35,7 @@ if __name__ == "__main__":
     trainer = ImagenTrainer(imagen)
 
     # load imagen:
-    ie, sd, td, _ = load_imagen("imagen_1_final.pt")
+    ie, sd, td, _ = load_imagen("imagen_0_final.pt")
     imagen.load_state_dict(sd)
     trainer.load_state_dict(td)
     imagen.eval()
