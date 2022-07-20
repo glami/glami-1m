@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-
+import os
 import numpy as np
 import torch
 from torch.utils.data import Dataset
@@ -133,6 +133,9 @@ class EmbraceConfig:
 
 
 def save_embracenet(lo, ie, sd, od, lb, sb, ib="final", base_name="embracenet"):
+    if not os.path.exists(MODEL_DIR):
+        os.mkdir(MODEL_DIR)
+
     print(f"Loss: {lo}")
     torch.save(
         {
