@@ -1,13 +1,11 @@
+numpy==1.19.2
 pandas==1.4.3
+scipy==1.8.1
+torch==1.10.1
+torchvision==0.11.2
 transformers==4.16.2
-
-# scipy==1.8.1
-# typing-extensions==4.2.0
-# torch==1.10.1
-# torchvision==0.11.2
-# pytorch-ignite==0.4.9
-# tabulate==0.8.9
-# # autoPyTorch==0.1.1
-# ipywidgets==7.7.0
-# imagen-pytorch==0.10.0
-# scikit-image==0.19.3
+imagen-pytorch==0.10.0
+tqdm==4.64.0
+tabulate==0.8.9
+pytorch-ignite==0.4.9
+sentencepiece==0.1.95
