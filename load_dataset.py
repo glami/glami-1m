@@ -20,6 +20,7 @@ COL_NAME_CATEGORY = "category"
 COL_NAME_CAT_NAME = "category_name"
 COL_NAME_LABEL_SOURCE = "label_source"
 COL_NAME_EMB_FILE = "emb_file"
+COL_NAME_MASK_FILE = "mask_file"
 DEFAULT_IMAGE_SIZE = (298, 228)
 
 
