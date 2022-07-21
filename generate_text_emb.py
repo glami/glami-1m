@@ -33,6 +33,11 @@ def t5_encode_text(tokenizer, model, texts, MAX_LENGTH=32):
 
 
 if __name__ == "__main__":
+    download_dataset(EXTRACT_DIR, DATASET_URL)
+    dataset_dir = EXTRACT_DIR + "/glami-2022-dataset"
+    train_df = get_dataframe(dataset_dir, "train")
+    test_df = get_dataframe(dataset_dir, "test")
+
     if not os.path.exists(EMBS_DIR):
         os.mkdir(EMBS_DIR)
 
@@ -40,11 +45,6 @@ if __name__ == "__main__":
     model = model.cuda()
     model.eval()
     tokenizer = T5Tokenizer.from_pretrained("google/mt5-small")
-
-    download_dataset(EXTRACT_DIR, DATASET_URL)
-    dataset_dir = EXTRACT_DIR + "/glami-2022-dataset"
-    train_df = get_dataframe(dataset_dir, "train")
-    test_df = get_dataframe(dataset_dir, "test")
 
     for df, df_name in zip([train_df, test_df], ["train", "test"]):
         file_filter = df[COL_NAME_ITEM_ID].apply(lambda x: f"{x}.npy")
