@@ -36,11 +36,15 @@ if __name__ == "__main__":
     dl_train = DataLoader(ds, batch_size=BATCH_SIZE, shuffle=True, num_workers=8)
 
     embrace_config = EmbraceConfig()
+    embrace_config.model_drop_first = False
+    embrace_config.model_drop_second = False
+    embrace_config.model_drop_third = False
     embracenet = EmbraceNetTrimodalClassifier(torch.device("cuda"), True, 16384, n_sources, n_cats, embrace_config, 512)
     embracenet.cuda()
 
     EPOCHS = 2
     SAVE_EVERY = 5000
+    basename = "full_embracenet"
     optimizer = torch.optim.Adam(embracenet.parameters())
     loss_fn = torch.nn.CrossEntropyLoss()
     print("Training...")
@@ -68,8 +72,15 @@ if __name__ == "__main__":
                     label_binarizer,
                     source_binarizer,
                     i_batch,
+                    base_name=basename,
                 )
 
         save_embracenet(
-            np.mean(losses), i_epoch, embracenet.state_dict(), optimizer.state_dict(), label_binarizer, source_binarizer
+            np.mean(losses),
+            i_epoch,
+            embracenet.state_dict(),
+            optimizer.state_dict(),
+            label_binarizer,
+            source_binarizer,
+            base_name=basename,
         )
