@@ -18,6 +18,7 @@ from load_dataset import (
     DEFAULT_IMAGE_SIZE,
     EMBS_DIR,
     MODEL_DIR,
+    COL_NAME_MASK_FILE,
 )
 
 
@@ -32,7 +33,7 @@ class EmbraceDataset(Dataset):
         self.df = df
         # add columns with embs
         self.df[COL_NAME_EMB_FILE] = self.df[COL_NAME_ITEM_ID].map(lambda x: f"{EMBS_DIR}/{x}.npy")
-
+        self.df[COL_NAME_MASK_FILE] = self.df[COL_NAME_ITEM_ID].map(lambda x: f"{EMBS_DIR}/{x}_mask.npy")
         self.transform = transform
 
     def __len__(self):
@@ -40,10 +41,17 @@ class EmbraceDataset(Dataset):
 
     def __getitem__(self, idx):
         all_tensors = (
-            self.df[[COL_NAME_EMB_FILE, COL_NAME_IMAGE_FILE, COL_NAME_LABEL_SOURCE, COL_NAME_CATEGORY]].iloc[idx].values
+            self.df[
+                [COL_NAME_EMB_FILE, COL_NAME_MASK_FILE, COL_NAME_IMAGE_FILE, COL_NAME_LABEL_SOURCE, COL_NAME_CATEGORY]
+            ]
+            .iloc[idx]
+            .values
         )
-        text_emb = np.load(all_tensors[0]).flatten()
-        loaded_image = io.imread(all_tensors[1])
+        text_emb = np.load(all_tensors[0])
+        text_mask = np.load(all_tensors[1])
+        text_emb = text_emb * text_mask[:, None]
+        text_emb = text_emb.flatten()
+        loaded_image = io.imread(all_tensors[2])
         # resize and normalize to 0-1
         loaded_image = resize(loaded_image, output_shape=DEFAULT_IMAGE_SIZE, preserve_range=False,).astype(np.float32)
         # convert to rgb format if needed
@@ -57,8 +65,8 @@ class EmbraceDataset(Dataset):
         sample = {
             "text_emb": text_emb,
             "image": loaded_image,
-            "label_source": np.array(all_tensors[2]).astype(np.float32),
-            "category": np.array(all_tensors[3]).astype(np.float32),
+            "label_source": np.array(all_tensors[3]).astype(np.float32),
+            "category": np.array(all_tensors[4]).astype(np.float32),
         }
 
         if self.transform:
