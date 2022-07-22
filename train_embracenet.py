@@ -47,7 +47,7 @@ if __name__ == "__main__":
     basename = "full_embracenet"
     optimizer = torch.optim.Adam(embracenet.parameters())
     loss_fn = torch.nn.CrossEntropyLoss()
-    print("Training...")
+    print(f"Training {basename}...")
     for i_epoch in range(EPOCHS):
         losses = []
         for i_batch, sample_batched in tqdm(

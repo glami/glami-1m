@@ -160,6 +160,7 @@ def save_embracenet(lo, ie, sd, od, lb, sb, ib="final", base_name="embracenet"):
 
 def load_embracenet(p):
     p = f"{MODEL_DIR}/{p}"
+    print(p)
     # load embracenet and optimizer:
     checkpoint = torch.load(p)
 
