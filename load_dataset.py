@@ -10,6 +10,7 @@ EXTRACT_DIR = os.environ.get("EXTRACT_DIR", "/tmp/glami-fashion-2022")
 MODEL_DIR = os.environ.get("MODEL_DIR", "/tmp/glami-fashion-2022/models")
 EMBS_DIR = EXTRACT_DIR + "/embs"
 CLIP_VISUAL_EMBS_DIR = EXTRACT_DIR + "/embs-clip-visual"
+CLIP_TEXTUAL_EMBS_DIR = EXTRACT_DIR + "/embs-clip-textual"
 GENERATED_DIR = EXTRACT_DIR + "/generated_images"
 
 COL_NAME_ITEM_ID = "item_id"

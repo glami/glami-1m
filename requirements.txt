@@ -3,7 +3,8 @@ pandas==1.4.3
 scipy==1.8.1
 torch==1.10.1
 torchvision==0.11.2
-transformers==4.16.2
+# transformers==4.16.2
+transformers==4.8.1  # Needed for M-CLIP Text embeddings
 imagen-pytorch==0.10.0
 tqdm==4.64.0
 tabulate==0.8.9
