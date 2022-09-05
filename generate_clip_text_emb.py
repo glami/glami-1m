@@ -39,18 +39,21 @@ if __name__ == "__main__":
         # Load Model & Tokenizer
         model_name = 'M-CLIP/XLM-Roberta-Large-Vit-B-32'
         model: MultilingualCLIP = pt_multilingual_clip.MultilingualCLIP.from_pretrained(model_name)
+        model = model.cuda()
+        model.eval()
         tokenizer: XLMRobertaTokenizerFast = transformers.AutoTokenizer.from_pretrained(model_name)
         return model, tokenizer
 
     model, tokenizer = load_model_and_tokenizer()
 
-    def encode(texts: str):
+    def encode(texts: list[str]):
         with torch.no_grad():
-            txt_tok = tokenizer(texts, padding=True, return_tensors='pt', max_length=MAX_LENGTH, truncation=True)
-            embs = model.transformer(**txt_tok)[0]
-            att = txt_tok['attention_mask']
-            embs = (embs * att.unsqueeze(2)).sum(dim=1) / att.sum(dim=1)[:, None]
-            # We could store in the inner representation without the linear projection and feed it into a transformer. For now throwing away the embeddings.
+            txt_tok = tokenizer.batch_encode_plus(texts, padding="max_length", return_tensors='pt', max_length=MAX_LENGTH, truncation=True)
+            input_ids = txt_tok.input_ids.cuda()
+            attn_mask = txt_tok.attention_mask.cuda()
+            embs = model.transformer(input_ids=input_ids, attention_mask=attn_mask)[0]
+            embs = (embs * attn_mask.unsqueeze(2)).sum(dim=1) / attn_mask.sum(dim=1)[:, None]
+            # TODO We could store in the inner representation without the linear projection and feed it into a transformer. For now throwing away the embeddings.
             return model.LinearTransformation(embs).cpu().detach().numpy()
 
     for df, df_name in zip([train_df, test_df], ["train", "test"]):   # type: pd.DataFrame, str
@@ -62,8 +65,8 @@ if __name__ == "__main__":
         # TODO .fillna('') !
         df[COL_NAME_DESCRIPTION] = df[COL_NAME_DESCRIPTION].astype(str)
 
-        BATCH_SIZE = 750  #   0%|          | 1/1333 [01:17<28:29:27, 77.00s/it]
-        # BATCH_SIZE = 64  #   0%|          | 4/15579 [01:07<82:10:29, 18.99s/it]
+        BATCH_SIZE = 750  #     1%|▏         | 17/1324 [01:32<1:58:52,  5.46s/it]
+        # BATCH_SIZE = 64  #
         for batch in tqdm(
             chunker(df.loc[:, [COL_NAME_ITEM_ID, COL_NAME_NAME, COL_NAME_DESCRIPTION, COL_NAME_IMAGE_FILE]], BATCH_SIZE),
             total=int(np.ceil(len(df) / BATCH_SIZE)),
