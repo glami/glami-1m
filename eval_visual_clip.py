@@ -1,7 +1,7 @@
 from typing import Optional
 
 import clip
-import scipy
+import pandas as pd
 
 from load_dataset import (
     download_dataset,
@@ -48,8 +48,15 @@ if __name__ == "__main__":
     cat_embeddings = text_features.cpu().detach().numpy()
     print(f'{category_name_to_prompt}')
 
+
+    def load_batch_embeddings(feature_emb_dir: str, batch: pd.DataFrame):
+        return np.array(list(np.load(f"{feature_emb_dir}/{item_id}.npy") for item_id in batch[COL_NAME_ITEM_ID].values))
+
+    def normalize(x: np.ndarray, axis=-1):
+        return x / np.linalg.norm(x, axis=axis, keepdims=True)
+
     def get_probabilities(embs_arr: np.ndarray):
-        embs_arr = embs_arr / np.linalg.norm(embs_arr, axis=-1, keepdims=True)
+        embs_arr = normalize(embs_arr)
         similarities = embs_arr @ cat_embeddings.transpose()
         exp_similarities = np.exp(similarities)
         feature_probabilities = exp_similarities / np.sum(exp_similarities, axis=-1, keepdims=True)
@@ -65,6 +72,7 @@ if __name__ == "__main__":
     targets = []
     # is_bagging_instead_of_feature_avg = True
     is_bagging_instead_of_feature_avg = False
+    normalize_embeddings_before_sum = False
     for batch in tqdm(
             chunker(df.loc[:, [COL_NAME_ITEM_ID, COL_NAME_NAME, COL_NAME_DESCRIPTION, COL_NAME_IMAGE_FILE, COL_NAME_CAT_NAME]],
                     BATCH_SIZE),
@@ -74,7 +82,7 @@ if __name__ == "__main__":
             # Average probabilities
             probabilities: Optional[np.ndarray] = None
             for feature_emb_dir in features_dirs:
-                embs_arr = np.array(list(np.load(f"{feature_emb_dir}/{item_id}.npy") for item_id in batch[COL_NAME_ITEM_ID].values))
+                embs_arr = load_batch_embeddings(feature_emb_dir, batch)
                 # np.fromiter((np.load(file) for file in emb_files), dtype=float, count=len(emb_files))
                 feature_probabilities = get_probabilities(embs_arr)
                 if probabilities is None:
@@ -91,8 +99,9 @@ if __name__ == "__main__":
             # Average embeddings
             embs_arr: Optional[np.ndarray] = None
             for feature_emb_dir in features_dirs:
-                feature_embs_arr = np.array(list(
-                    np.load(f"{feature_emb_dir}/{item_id}.npy") for item_id in batch[COL_NAME_ITEM_ID].values))
+                feature_embs_arr = load_batch_embeddings(feature_emb_dir, batch)
+                if normalize_embeddings_before_sum:
+                    feature_embs_arr = normalize(feature_embs_arr)
 
                 if embs_arr is None:
                     embs_arr = feature_embs_arr
@@ -110,8 +119,9 @@ if __name__ == "__main__":
     print(f"Accuracies:")
     print(accs)
 
-# Visual features with CLIP type prompt: {1: 0.29138640811643757, 5: 0.7185566778395159}
-# Textual features with CLIP type prompt: {1: 0.2608522859349575, 5: 0.5662085048628139}
-# Ensemble Visual+textual features with CLIP type prompt: {1: 0.30645850673745306, 5: 0.6880600484406751}
-# Ensemble Visual*textual features with CLIP type prompt: {1: 0.30702089847704317, 5: 0.6903546067382029}
-# Sum visual and textual embeddings with CLIP type prompt: {1: 0.3200308940528948, 5: 0.7333363327559445}
+# Visual features and CLIP type prompt: {1: 0.29138640811643757, 5: 0.7185566778395159}
+# Textual features and CLIP type prompt: {1: 0.2608522859349575, 5: 0.5662085048628139}
+# Ensemble Visual+textual features and CLIP type prompt: {1: 0.30645850673745306, 5: 0.6880600484406751}
+# Ensemble Visual*textual features and CLIP type prompt: {1: 0.30702089847704317, 5: 0.6903546067382029}
+# Average visual and textual embeddings and CLIP type prompt: {1: 0.3200308940528948, 5: 0.7333363327559445}
+# Average normalized visual and textual embeddings and CLIP type prompt: {1: 0.30664597065064975, 5: 0.6904220937469537}
