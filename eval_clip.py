@@ -10,7 +10,7 @@ from load_dataset import (
     get_dataframe,
     COL_NAME_CATEGORY,
     COL_NAME_LABEL_SOURCE, COL_NAME_CAT_NAME, CLIP_VISUAL_EMBS_DIR, COL_NAME_ITEM_ID, COL_NAME_NAME,
-    COL_NAME_DESCRIPTION, COL_NAME_IMAGE_FILE, CLIP_TEXTUAL_EMBS_DIR,
+    COL_NAME_DESCRIPTION, COL_NAME_IMAGE_FILE, CLIP_TEXTUAL_EMBS_DIR, CLIP_EN_TEXTUAL_EMBS_DIR,
 )
 from utils import calc_accuracy, chunker
 import torch
@@ -65,6 +65,7 @@ if __name__ == "__main__":
 
     BATCH_SIZE = 256
     print("Evaluating...")
+    # features_dirs = [CLIP_EN_TEXTUAL_EMBS_DIR]
     features_dirs = [CLIP_VISUAL_EMBS_DIR, CLIP_TEXTUAL_EMBS_DIR]
     # features_dirs = [CLIP_VISUAL_EMBS_DIR]
     # features_dirs = [CLIP_TEXTUAL_EMBS_DIR]
@@ -125,3 +126,4 @@ if __name__ == "__main__":
 # Ensemble Visual*textual features and CLIP type prompt: {1: 0.30702089847704317, 5: 0.6903546067382029}
 # Average visual and textual embeddings and CLIP type prompt: {1: 0.3200308940528948, 5: 0.7333363327559445}
 # Average normalized visual and textual embeddings and CLIP type prompt: {1: 0.30664597065064975, 5: 0.6904220937469537}
+# English-textual features and CLIP type prompt: {1: 0.07329839005991347, 5: 0.1750463035865596}
