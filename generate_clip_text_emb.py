@@ -1,6 +1,7 @@
 import os
 from glob import glob
 
+import clip
 import torch
 import transformers
 from multilingual_clip import pt_multilingual_clip
@@ -16,7 +17,7 @@ from load_dataset import (
     COL_NAME_ITEM_ID,
     COL_NAME_NAME,
     COL_NAME_DESCRIPTION,
-    COL_NAME_IMAGE_FILE, CLIP_TEXTUAL_EMBS_DIR,
+    COL_NAME_IMAGE_FILE, CLIP_TEXTUAL_EMBS_DIR, CLIP_EN_TEXTUAL_EMBS_DIR,
 )
 from utils import chunker
 import numpy as np
@@ -24,7 +25,9 @@ import pandas as pd
 
 
 MAX_LENGTH = 32
-
+device = "cuda" if torch.cuda.is_available() else "cpu"
+# feature_emb_dir = CLIP_TEXTUAL_EMBS_DIR
+feature_emb_dir = CLIP_EN_TEXTUAL_EMBS_DIR
 
 if __name__ == "__main__":
     download_dataset(EXTRACT_DIR, DATASET_URL)
@@ -32,8 +35,8 @@ if __name__ == "__main__":
     train_df = get_dataframe(dataset_dir, "train")
     test_df = get_dataframe(dataset_dir, "test")
 
-    if not os.path.exists(CLIP_TEXTUAL_EMBS_DIR):
-        os.mkdir(CLIP_TEXTUAL_EMBS_DIR)
+    if not os.path.exists(feature_emb_dir):
+        os.mkdir(feature_emb_dir)
 
     def load_model_and_tokenizer():
         # Load Model & Tokenizer
@@ -44,7 +47,15 @@ if __name__ == "__main__":
         tokenizer: XLMRobertaTokenizerFast = transformers.AutoTokenizer.from_pretrained(model_name)
         return model, tokenizer
 
-    model, tokenizer = load_model_and_tokenizer()
+    def load_en_model_and_tokenizer():
+        model, preprocess = clip.load("ViT-B/32", device=device)
+        return model, None
+
+    if feature_emb_dir == CLIP_TEXTUAL_EMBS_DIR:
+        model, tokenizer = load_model_and_tokenizer()
+
+    else:
+        model, tokenizer = load_en_model_and_tokenizer()
 
     def encode(texts: list[str]):
         with torch.no_grad():
@@ -56,9 +67,24 @@ if __name__ == "__main__":
             # TODO We could store in the inner representation without the linear projection and feed it into a transformer. For now throwing away the embeddings.
             return model.LinearTransformation(embs).cpu().detach().numpy()
 
+    def encode_en(texts: list[str]):
+        # model does not allow reducing length to 32 so we use padding
+        EN_CLIP_MAX_LEN = 77
+        text = clip.tokenize(texts, context_length=MAX_LENGTH, truncate=True).to(device)
+        text = torch.concat([text[:, 0:-1], torch.zeros((text.shape[0], EN_CLIP_MAX_LEN - text.shape[1]), device=device, dtype=int), text[:, -1:]], dim=-1)
+        torch.concat([
+            text[:, 0:-1],
+            torch.zeros((text.shape[0], EN_CLIP_MAX_LEN - text.shape[1]), device=device, dtype=int),
+            text[:, -1:]],
+            dim=-1)
+
+        with torch.no_grad():
+            text_features = model.encode_text(text)
+            return text_features.cpu().detach().numpy()
+
     for df, df_name in zip([train_df, test_df], ["train", "test"]):   # type: pd.DataFrame, str
         file_filter = df[COL_NAME_ITEM_ID].apply(lambda x: f"{x}.npy")
-        existing_embs = [os.path.basename(x) for x in glob(f"{CLIP_TEXTUAL_EMBS_DIR}/*")]
+        existing_embs = [os.path.basename(x) for x in glob(f"{feature_emb_dir}/*")]
         file_filter = ~file_filter.isin(existing_embs)
         df = df.loc[file_filter]
         df[COL_NAME_NAME] = df[COL_NAME_NAME].astype(str)
@@ -73,8 +99,13 @@ if __name__ == "__main__":
         ):
             # For proper comparison a space is used for separation, but potentially other separator would be better.
             texts = (batch[COL_NAME_NAME] + ' ' + batch[COL_NAME_DESCRIPTION]).tolist()
-            embs = encode(texts)
-            files = [f"{CLIP_TEXTUAL_EMBS_DIR}/{x[0]}.npy" for x in batch.values]
+            if feature_emb_dir == CLIP_TEXTUAL_EMBS_DIR:
+                embs = encode(texts)
+
+            else:
+                embs = encode_en(texts)
+
+            files = [f"{feature_emb_dir}/{x[0]}.npy" for x in batch.values]
             for i in range(len(batch)):
                 np.save(files[i], embs[i])
 
