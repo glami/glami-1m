@@ -1,4 +1,12 @@
+import base64
+
 import numpy as np
+import pandas as pd
+from IPython.core.display import display, HTML, Image
+from tqdm import tqdm
+
+from load_dataset import CLIP_VISUAL_EMBS_DIR, COL_NAME_ITEM_ID, COL_NAME_IMAGE_FILE, COL_NAME_NAME, \
+    COL_NAME_DESCRIPTION, COL_NAME_CAT_NAME
 
 
 def chunker(dftochunk, size):
@@ -34,3 +42,48 @@ def calc_accuracy(X: np.ndarray, Y: np.ndarray, ks=(1, 5)):
         accs[k] = np.sum(Y[preds]) / X.shape[0]
 
     return accs
+
+
+def load_embeddings(df: pd.DataFrame, embs_dir=CLIP_VISUAL_EMBS_DIR) -> np.ndarray:
+    batch_size = 1024
+    arrays = []
+
+    for batch_df in tqdm(
+            chunker(df.loc[:, [COL_NAME_ITEM_ID]], batch_size),
+            total=int(np.ceil(len(df) / batch_size)),
+    ):
+        embeddings_array = load_batch_embeddings(embs_dir, batch_df)
+        embeddings_array = normalize(embeddings_array)
+        arrays.append(embeddings_array)
+
+    embeddings_array = np.concatenate(arrays)
+    return embeddings_array
+
+
+def load_batch_embeddings(feature_emb_dir: str, batch: pd.DataFrame):
+    return np.array(list(np.load(f"{feature_emb_dir}/{item_id}.npy") for item_id in batch[COL_NAME_ITEM_ID].values))
+
+
+def normalize(x: np.ndarray, axis=-1):
+    return x / np.linalg.norm(x, axis=axis, keepdims=True)
+
+
+def image_formatter(img_file):
+    # i = Image(filename=img_file)
+    with open(img_file, "rb") as f:
+        encoded_string = base64.b64encode(f.read()).decode()
+        return f'<img width="150" src="data:image/png;base64,{encoded_string}">'
+
+
+def public_dataset_to_html(df: pd.DataFrame):
+    return display(
+        HTML(
+            df[[COL_NAME_ITEM_ID, COL_NAME_IMAGE_FILE] + [COL_NAME_NAME, COL_NAME_DESCRIPTION, COL_NAME_CAT_NAME]].to_html(
+                formatters={
+                    COL_NAME_IMAGE_FILE: image_formatter,
+                },
+                escape=False,
+                index=False,
+            )
+        )
+    )

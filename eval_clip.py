@@ -1,3 +1,4 @@
+import os
 from typing import Optional
 
 import clip
@@ -10,9 +11,9 @@ from load_dataset import (
     get_dataframe,
     COL_NAME_CATEGORY,
     COL_NAME_LABEL_SOURCE, COL_NAME_CAT_NAME, CLIP_VISUAL_EMBS_DIR, COL_NAME_ITEM_ID, COL_NAME_NAME,
-    COL_NAME_DESCRIPTION, COL_NAME_IMAGE_FILE, CLIP_TEXTUAL_EMBS_DIR, CLIP_EN_TEXTUAL_EMBS_DIR,
+    COL_NAME_DESCRIPTION, COL_NAME_IMAGE_FILE, CLIP_TEXTUAL_EMBS_DIR, CLIP_EN_TEXTUAL_EMBS_DIR, DATASET_DIR,
 )
-from utils import calc_accuracy, chunker
+from utils import calc_accuracy, chunker, load_batch_embeddings, normalize
 import torch
 from tqdm import tqdm
 import numpy as np
@@ -20,10 +21,10 @@ import numpy as np
 
 if __name__ == "__main__":
     download_dataset(EXTRACT_DIR, DATASET_URL)
-    dataset_dir = EXTRACT_DIR + "/glami-2022-dataset"
-    df = get_dataframe(dataset_dir, "test")
+    df = get_dataframe(DATASET_DIR, "test")
+    print('Test dataset size:', len(df))
 
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    device = os.environ.get('DEVICE', "cuda" if torch.cuda.is_available() else "cpu")
     model, preprocess = clip.load("ViT-B/32", device=device)
 
     print("Generating target embeddings from prompts...")
@@ -48,13 +49,6 @@ if __name__ == "__main__":
     cat_embeddings = text_features.cpu().detach().numpy()
     print(f'{category_name_to_prompt}')
 
-
-    def load_batch_embeddings(feature_emb_dir: str, batch: pd.DataFrame):
-        return np.array(list(np.load(f"{feature_emb_dir}/{item_id}.npy") for item_id in batch[COL_NAME_ITEM_ID].values))
-
-    def normalize(x: np.ndarray, axis=-1):
-        return x / np.linalg.norm(x, axis=axis, keepdims=True)
-
     def get_probabilities(embs_arr: np.ndarray):
         embs_arr = normalize(embs_arr)
         similarities = embs_arr @ cat_embeddings.transpose()
@@ -66,9 +60,14 @@ if __name__ == "__main__":
     BATCH_SIZE = 256
     print("Evaluating...")
     # features_dirs = [CLIP_EN_TEXTUAL_EMBS_DIR]
-    features_dirs = [CLIP_VISUAL_EMBS_DIR, CLIP_TEXTUAL_EMBS_DIR]
     # features_dirs = [CLIP_VISUAL_EMBS_DIR]
     # features_dirs = [CLIP_TEXTUAL_EMBS_DIR]
+    features_dirs = [CLIP_VISUAL_EMBS_DIR, CLIP_TEXTUAL_EMBS_DIR]
+
+    print('Feature_dirs:')
+    print(features_dirs)
+    print()
+
     predictions = []
     targets = []
     # is_bagging_instead_of_feature_avg = True
@@ -117,13 +116,10 @@ if __name__ == "__main__":
         targets.extend([np.eye(1, len(category_name_to_idx), i, dtype=int)[0].tolist() for i in target_sr])
 
     accs = calc_accuracy(np.array(predictions), np.array(targets))
+    print()
     print(f"Accuracies:")
     print(accs)
 
-# Visual features and CLIP type prompt: {1: 0.29138640811643757, 5: 0.7185566778395159}
-# Textual features and CLIP type prompt: {1: 0.2608522859349575, 5: 0.5662085048628139}
-# Ensemble Visual+textual features and CLIP type prompt: {1: 0.30645850673745306, 5: 0.6880600484406751}
-# Ensemble Visual*textual features and CLIP type prompt: {1: 0.30702089847704317, 5: 0.6903546067382029}
-# Average visual and textual embeddings and CLIP type prompt: {1: 0.3200308940528948, 5: 0.7333363327559445}
-# Average normalized visual and textual embeddings and CLIP type prompt: {1: 0.30664597065064975, 5: 0.6904220937469537}
-# English-textual features and CLIP type prompt: {1: 0.07329839005991347, 5: 0.1750463035865596}
+# Average visual and textual embeddings (ensamble) and CLIP type prompt: {1: 0.3232991965794283, 5: 0.7450087928002482}
+# Visual features and CLIP type prompt: {1: 0.28931760973759524, 5: 0.7179321402710251}
+# Textual features and CLIP type prompt: {1: 0.2654218820040688, 5: 0.5850574118133858}

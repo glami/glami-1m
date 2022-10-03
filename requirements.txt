@@ -1,4 +1,4 @@
-numpy==1.19.2
+numpy~=1.20.0
 pandas==1.4.3
 scipy==1.8.1
 torch==1.10.1
@@ -14,3 +14,7 @@ scikit-image==0.19.3
 
 multilingual-clip==1.0.10
 git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1
+
+scann==1.2.6
+notebook==6.4.12
+matplotlib==3.3.3
