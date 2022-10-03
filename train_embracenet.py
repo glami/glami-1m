@@ -17,6 +17,8 @@ if __name__ == "__main__":
     download_dataset(EXTRACT_DIR, DATASET_URL)
     dataset_dir = EXTRACT_DIR + "/glami-2022-dataset"
     df = get_dataframe(dataset_dir, "train")
+    # uncomment to train on human labels only
+    # df = df[df["label_source"].isin(["admin", "quality-check", "custom-tag"])]
 
     print("One hot encoding...")
     y = pd.get_dummies(df[COL_NAME_CATEGORY], prefix="cat")
