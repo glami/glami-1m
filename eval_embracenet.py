@@ -62,6 +62,18 @@ if __name__ == "__main__":
             preds.extend(outputs.cpu().detach().tolist())
             targets.extend(sample_batched["category"].cpu().bool().detach().tolist())
 
-    accs = calc_accuracy(np.array(preds), np.array(targets))
+    preds = np.array(preds)
+    targets = np.array(targets)
+    accs = calc_accuracy(preds, targets)
     print(f"Accuracies:")
     print(accs)
+    geos = df["geo"].unique()
+    for geo in geos:
+        geo_mask = df["geo"] == geo
+        geo_mask = geo_mask.values
+        geo_preds = preds[geo_mask]
+        geo_targets = targets[geo_mask]
+
+        accs = calc_accuracy(geo_preds, geo_targets)
+        print(f"Accuracies ({geo}):")
+        print(accs)
