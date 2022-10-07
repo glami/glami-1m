@@ -4,7 +4,7 @@ from load_dataset import (
     DATASET_URL,
     get_dataframe,
     COL_NAME_CATEGORY,
-    COL_NAME_LABEL_SOURCE,
+    COL_NAME_LABEL_SOURCE, DATASET_DIR,
 )
 import pandas as pd
 import numpy as np
@@ -15,8 +15,7 @@ from tqdm import tqdm
 
 if __name__ == "__main__":
     download_dataset(EXTRACT_DIR, DATASET_URL)
-    dataset_dir = EXTRACT_DIR + "/glami-2022-dataset"
-    df = get_dataframe(dataset_dir, "train")
+    df = get_dataframe(DATASET_DIR, "train")
     # uncomment to train on human labels only
     # df = df[df["label_source"].isin(["admin", "quality-check", "custom-tag"])]
 

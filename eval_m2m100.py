@@ -14,7 +14,7 @@ from load_dataset import (
     get_dataframe,
     COL_NAME_GEO,
     COL_NAME_IMAGE_ID,
-    COL_NAME_DESCRIPTION,
+    COL_NAME_DESCRIPTION, DATASET_DIR,
 )
 from utils import chunker
 
@@ -38,9 +38,8 @@ if __name__ == "__main__":
     geos = geo_to_m2mlang.keys()
 
     download_dataset(EXTRACT_DIR, DATASET_URL)
-    dataset_dir = EXTRACT_DIR + "/glami-2022-dataset/"
-    train_df = get_dataframe(dataset_dir, "train")
-    test_df = get_dataframe(dataset_dir, "test")
+    train_df = get_dataframe(DATASET_DIR, "train")
+    test_df = get_dataframe(DATASET_DIR, "test")
 
     tcols = [COL_NAME_GEO, COL_NAME_IMAGE_ID, COL_NAME_DESCRIPTION]
 

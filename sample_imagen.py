@@ -8,7 +8,7 @@ from load_dataset import (
     COL_NAME_NAME,
     COL_NAME_DESCRIPTION,
     EMBS_DIR,
-    COL_NAME_ITEM_ID,
+    COL_NAME_ITEM_ID, DATASET_DIR,
 )
 import os
 from imagen_pytorch import ImagenTrainer
@@ -20,8 +20,7 @@ from utils import chunker
 
 if __name__ == "__main__":
     download_dataset(EXTRACT_DIR, DATASET_URL)
-    dataset_dir = EXTRACT_DIR + "/glami-2022-dataset"
-    df = get_dataframe(dataset_dir, "test")
+    df = get_dataframe(DATASET_DIR, "test")
     df[COL_NAME_NAME] = df[COL_NAME_NAME].astype(str)
     df[COL_NAME_DESCRIPTION] = df[COL_NAME_DESCRIPTION].astype(str)
 

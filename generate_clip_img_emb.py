@@ -9,7 +9,7 @@ from load_dataset import (
     COL_NAME_ITEM_ID,
     COL_NAME_NAME,
     COL_NAME_DESCRIPTION,
-    CLIP_VISUAL_EMBS_DIR, COL_NAME_IMAGE_FILE,
+    CLIP_VISUAL_EMBS_DIR, COL_NAME_IMAGE_FILE, DATASET_DIR,
 )
 from utils import chunker
 import numpy as np
@@ -20,9 +20,8 @@ from PIL import Image
 
 if __name__ == "__main__":
     download_dataset(EXTRACT_DIR, DATASET_URL)
-    dataset_dir = EXTRACT_DIR + "/glami-2022-dataset"
-    train_df = get_dataframe(dataset_dir, "train")
-    test_df = get_dataframe(dataset_dir, "test")
+    train_df = get_dataframe(DATASET_DIR, "train")
+    test_df = get_dataframe(DATASET_DIR, "test")
 
     if not os.path.exists(CLIP_VISUAL_EMBS_DIR):
         os.mkdir(CLIP_VISUAL_EMBS_DIR)

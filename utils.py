@@ -69,7 +69,6 @@ def normalize(x: np.ndarray, axis=-1):
 
 
 def image_formatter(img_file):
-    # i = Image(filename=img_file)
     with open(img_file, "rb") as f:
         encoded_string = base64.b64encode(f.read()).decode()
         return f'<img width="150" src="data:image/png;base64,{encoded_string}">'

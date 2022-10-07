@@ -11,7 +11,7 @@ from load_dataset import (
     COL_NAME_ITEM_ID,
     COL_NAME_NAME,
     COL_NAME_DESCRIPTION,
-    EMBS_DIR,
+    EMBS_DIR, DATASET_DIR,
 )
 from utils import chunker
 import numpy as np
@@ -34,9 +34,8 @@ def t5_encode_text(tokenizer, model, texts, MAX_LENGTH=32):
 
 if __name__ == "__main__":
     download_dataset(EXTRACT_DIR, DATASET_URL)
-    dataset_dir = EXTRACT_DIR + "/glami-2022-dataset"
-    train_df = get_dataframe(dataset_dir, "train")
-    test_df = get_dataframe(dataset_dir, "test")
+    train_df = get_dataframe(DATASET_DIR, "train")
+    test_df = get_dataframe(DATASET_DIR, "test")
 
     if not os.path.exists(EMBS_DIR):
         os.mkdir(EMBS_DIR)

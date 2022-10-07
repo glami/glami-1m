@@ -74,10 +74,10 @@ def download_dataset(extract_dir, dataset_url):
         print("Extract dir already exists. Delete it to re-download.")
 
 
-def get_dataframe(extract_dir: str, split_type: str):
+def get_dataframe(dataset_dir: str, split_type: str):
     assert split_type in ("train", "test")
-    df = pd.read_csv(extract_dir + f"/GLAMI-1M-{split_type}.csv")
-    df[COL_NAME_IMAGE_FILE] = extract_dir + "/images/" + df[COL_NAME_IMAGE_ID].astype(str) + ".jpg"
+    df = pd.read_csv(dataset_dir + f"/GLAMI-1M-{split_type}.csv")
+    df[COL_NAME_IMAGE_FILE] = dataset_dir + "/images/" + df[COL_NAME_IMAGE_ID].astype(str) + ".jpg"
     df[COL_NAME_DESCRIPTION] = df[COL_NAME_DESCRIPTION].fillna('')
     assert os.path.exists(df.loc[0, COL_NAME_IMAGE_FILE])
     return df
@@ -85,6 +85,5 @@ def get_dataframe(extract_dir: str, split_type: str):
 
 if __name__ == "__main__":
     download_dataset(EXTRACT_DIR, DATASET_URL)
-    dataset_dir = EXTRACT_DIR + "/glami-2022-dataset"
-    test_df = get_dataframe(dataset_dir, "test")
-    train_df = get_dataframe(dataset_dir, "train")
+    test_df = get_dataframe(DATASET_DIR, "test")
+    train_df = get_dataframe(DATASET_DIR, "train")

@@ -4,7 +4,7 @@ from load_dataset import (
     DATASET_URL,
     get_dataframe,
     COL_NAME_CATEGORY,
-    COL_NAME_LABEL_SOURCE,
+    COL_NAME_LABEL_SOURCE, DATASET_DIR,
 )
 from embracenet_utils import EmbraceConfig, load_embracenet, EmbraceNetTrimodalClassifier, EmbraceDataset
 from utils import calc_accuracy
@@ -16,8 +16,7 @@ import numpy as np
 
 if __name__ == "__main__":
     download_dataset(EXTRACT_DIR, DATASET_URL)
-    dataset_dir = EXTRACT_DIR + "/glami-2022-dataset"
-    df = get_dataframe(dataset_dir, "test")
+    df = get_dataframe(DATASET_DIR, "test")
 
     econfig = EmbraceConfig()
 

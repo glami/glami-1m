@@ -1,6 +1,6 @@
 from torch.utils.data import DataLoader
 from imagen_utils import ImagenDataset, SmallImagen, save_imagen
-from load_dataset import download_dataset, EXTRACT_DIR, DATASET_URL, get_dataframe, MODEL_DIR
+from load_dataset import download_dataset, EXTRACT_DIR, DATASET_URL, get_dataframe, MODEL_DIR, DATASET_DIR
 from tqdm import tqdm
 import numpy as np
 from imagen_pytorch import ImagenTrainer
@@ -9,8 +9,7 @@ import torch
 
 if __name__ == "__main__":
     download_dataset(EXTRACT_DIR, DATASET_URL)
-    dataset_dir = EXTRACT_DIR + "/glami-2022-dataset"
-    df = get_dataframe(dataset_dir, "train")
+    df = get_dataframe(DATASET_DIR, "train")
 
     ds = ImagenDataset(df, transform=None)
     BATCH_SIZE = 4
