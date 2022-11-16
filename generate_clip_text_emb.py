@@ -30,9 +30,9 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 feature_emb_dir = CLIP_EN_TEXTUAL_EMBS_DIR
 
 if __name__ == "__main__":
-    download_dataset(EXTRACT_DIR, DATASET_URL)
-    train_df = get_dataframe(DATASET_DIR, "train")
-    test_df = get_dataframe(DATASET_DIR, "test")
+    download_dataset()
+    train_df = get_dataframe("train")
+    test_df = get_dataframe("test")
 
     if not os.path.exists(feature_emb_dir):
         os.mkdir(feature_emb_dir)

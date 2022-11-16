@@ -19,8 +19,8 @@ import numpy as np
 from utils import chunker
 
 if __name__ == "__main__":
-    download_dataset(EXTRACT_DIR, DATASET_URL)
-    df = get_dataframe(DATASET_DIR, "test")
+    download_dataset()
+    df = get_dataframe("test")
     df[COL_NAME_NAME] = df[COL_NAME_NAME].astype(str)
     df[COL_NAME_DESCRIPTION] = df[COL_NAME_DESCRIPTION].astype(str)
 

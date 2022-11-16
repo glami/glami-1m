@@ -15,8 +15,8 @@ import numpy as np
 
 
 if __name__ == "__main__":
-    download_dataset(EXTRACT_DIR, DATASET_URL)
-    df = get_dataframe(DATASET_DIR, "test")
+    download_dataset()
+    df = get_dataframe("test")
 
     econfig = EmbraceConfig()
 

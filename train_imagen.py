@@ -8,8 +8,8 @@ import torch
 
 
 if __name__ == "__main__":
-    download_dataset(EXTRACT_DIR, DATASET_URL)
-    df = get_dataframe(DATASET_DIR, "train")
+    download_dataset()
+    df = get_dataframe("train")
 
     ds = ImagenDataset(df, transform=None)
     BATCH_SIZE = 4

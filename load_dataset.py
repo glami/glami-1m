@@ -5,7 +5,7 @@ from tqdm import tqdm
 from transformers.file_utils import http_get
 import pandas as pd
 
-DATASET_URL = os.environ.get("DATASET_URL")
+DATASET_URL = os.environ.get("DATASET_URL", "https://zenodo.org/record/7326406/files/GLAMI-1M-dataset.zip?download=1")
 EXTRACT_DIR = os.environ.get("EXTRACT_DIR", "/tmp/GLAMI-1M")
 DATASET_DIR = dataset_dir = EXTRACT_DIR + "/GLAMI-1M-dataset"
 MODEL_DIR = os.environ.get("MODEL_DIR", "/tmp/GLAMI-1M/models")
@@ -49,7 +49,7 @@ COUNTRY_CODE_TO_COUNTRY_NAME = {
 COUNTRY_CODE_TO_COUNTRY_NAME_W_CC = {name + f' ({cc})' for cc, name in COUNTRY_CODE_TO_COUNTRY_NAME}
 
 
-def download_dataset(extract_dir, dataset_url):
+def download_dataset(extract_dir=EXTRACT_DIR, dataset_url=DATASET_URL):
     """
     WARNING extraction requires double size of the dataset ~ 20GB.
     Download unzip ideally while streaming, since the size is the same, on disk to a tmp folder or other folder selected.
@@ -74,7 +74,7 @@ def download_dataset(extract_dir, dataset_url):
         print("Extract dir already exists. Delete it to re-download.")
 
 
-def get_dataframe(dataset_dir: str, split_type: str):
+def get_dataframe(split_type: str, dataset_dir=DATASET_DIR):
     assert split_type in ("train", "test")
     df = pd.read_csv(dataset_dir + f"/GLAMI-1M-{split_type}.csv")
     df[COL_NAME_IMAGE_FILE] = dataset_dir + "/images/" + df[COL_NAME_IMAGE_ID].astype(str) + ".jpg"
@@ -84,6 +84,6 @@ def get_dataframe(dataset_dir: str, split_type: str):
 
 
 if __name__ == "__main__":
-    download_dataset(EXTRACT_DIR, DATASET_URL)
-    test_df = get_dataframe(DATASET_DIR, "test")
-    train_df = get_dataframe(DATASET_DIR, "train")
+    download_dataset()
+    test_df = get_dataframe("test")
+    train_df = get_dataframe("train")

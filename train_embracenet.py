@@ -14,8 +14,8 @@ import torch
 from tqdm import tqdm
 
 if __name__ == "__main__":
-    download_dataset(EXTRACT_DIR, DATASET_URL)
-    df = get_dataframe(DATASET_DIR, "train")
+    download_dataset()
+    df = get_dataframe("train")
     # uncomment to train on human labels only
     # df = df[df["label_source"].isin(["admin", "quality-check", "custom-tag"])]
 

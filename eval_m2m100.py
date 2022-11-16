@@ -37,9 +37,9 @@ if __name__ == "__main__":
 
     geos = geo_to_m2mlang.keys()
 
-    download_dataset(EXTRACT_DIR, DATASET_URL)
-    train_df = get_dataframe(DATASET_DIR, "train")
-    test_df = get_dataframe(DATASET_DIR, "test")
+    download_dataset()
+    train_df = get_dataframe("train")
+    test_df = get_dataframe("test")
 
     tcols = [COL_NAME_GEO, COL_NAME_IMAGE_ID, COL_NAME_DESCRIPTION]
 
