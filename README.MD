@@ -7,7 +7,7 @@ We introduce GLAMI-1M: the largest multilingual image-text classification datase
 
 ## GLAMI-1M Paper
 
-The paper was accepted to BMVC 2022 and will be published soon.
+The paper was accepted to [BMVC 2022](https://bmvc2022.org/programme/papers/) and will be published soon.
 The paper will be accessible soon on Arxiv as well.
 
 
