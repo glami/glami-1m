@@ -15,8 +15,8 @@ The paper will be accessible soon on Arxiv as well.
 You can either manually download the dataset zip file yourself or use the repository scripts to download, extract, and load into a dataframe.
 
 To manually download the dataset ZIP file(s):
-- [GLAMI-1M dataset 228x298 version here (11GB)](https://zenodo.org/record/7326406/files/GLAMI-1M-dataset.zip?download=1)
-- (coming soon) 800x800 version here (62GB)
+- [GLAMI-1M Dataset (the default 228x298 version) here (1 zip  file of 11GB)](https://zenodo.org/record/7326406/files/GLAMI-1M-dataset.zip?download=1)
+- [GLAMI-1M Dataset 800x800 version here (11 zip files of 54GB)](https://zenodo.org/record/7338792)
 
 
 ## GLAMI-1M Code
@@ -34,7 +34,7 @@ pip install -r requirements.txt
 
 ### How to Download GLAMI-1M Programmatically
 
-The dataset can be downloaded programmatically.
+The dataset can be downloaded programmatically with the default 228x298 version.
 The destination directory to download and extract the dataset can be configured with environmental variable EXTRACT_DIR.
 EXTRACT_DIR is by default configured as a Linux temporary directory, which is removed upon machine restarts.
 Before downloading the dataset, make sure you have enough space to download and unzip corresponding version of the dataset.
