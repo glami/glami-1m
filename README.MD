@@ -21,6 +21,7 @@ To manually download the dataset ZIP file(s):
 
 ## GLAMI-1M Code
 Together with the dataset with provide helper code and experiments described in the paper.
+The model weights will be uploaded soon.
 
 
 ### Installation
