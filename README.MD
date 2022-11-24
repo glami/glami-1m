@@ -50,6 +50,11 @@ After the download, we can load the dataset into a dataframe.
 EXTRACT_DIR="/tmp/GLAMI-1M/" python -c 'import load_dataset; print(load_dataset.get_dataframe("test").head())'
 ```
 
+### Baseline Weights
+
+Weights for the baselines models described in the paper are available [here](https://zenodo.org/record/7353512).
+
+
 # Examples
 
 ![GLAMI-1M Dataset Examples Table](media/glami-1m-dataset-examples-table.png)
