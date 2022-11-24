@@ -52,7 +52,7 @@ EXTRACT_DIR="/tmp/GLAMI-1M/" python -c 'import load_dataset; print(load_dataset.
 
 ### Baseline Weights
 
-Weights for the baselines models described in the paper are available [here](https://zenodo.org/record/7353512).
+Weights for the baseline models described in the paper are available [here](https://zenodo.org/record/7353512).
 
 
 # Examples
