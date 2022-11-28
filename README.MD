@@ -7,7 +7,7 @@ We introduce GLAMI-1M: the largest multilingual image-text classification datase
 
 ## GLAMI-1M Paper
 
-The [paper](https://bmvc2022.mpi-inf.mpg.de/0607.pdf) ([supplementary](https://docs.google.com/viewer?url=https://github.com/glami/glami-1m/raw/main/media/GLAMI-1M%20Supplementary.pdf)) published at [BMVC 2022](https://bmvc2022.mpi-inf.mpg.de/607/).
+The [paper](https://bmvc2022.mpi-inf.mpg.de/0607.pdf) (and [supplementary](https://docs.google.com/viewer?url=https://github.com/glami/glami-1m/raw/main/media/GLAMI-1M%20Supplementary.pdf)) were published at [BMVC 2022](https://bmvc2022.mpi-inf.mpg.de/607/).
 The paper will be accessible soon on Arxiv as well.
 
 
