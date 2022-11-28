@@ -10,7 +10,7 @@ We introduce GLAMI-1M: the largest multilingual image-text classification datase
 The [paper](https://bmvc2022.mpi-inf.mpg.de/0607.pdf) (and [supplementary](https://docs.google.com/viewer?url=https://github.com/glami/glami-1m/raw/main/media/GLAMI-1M%20Supplementary.pdf)) were published at [BMVC 2022](https://bmvc2022.mpi-inf.mpg.de/607/).
 The paper will be accessible soon on Arxiv as well.
 
-
+On The Papers with Code, we set up [mutlilingual image-text classification benchmark](https://paperswithcode.com/sota/multi-lingual-image-text-classification-on).
 
 ## How to Download GLAMI-1M Manually
 You can either manually download the dataset zip file yourself or use the repository scripts to download, extract, and load into a dataframe.
