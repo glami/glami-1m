@@ -7,8 +7,9 @@ We introduce GLAMI-1M: the largest multilingual image-text classification datase
 
 ## GLAMI-1M Paper
 
-The [paper](https://bmvc2022.mpi-inf.mpg.de/0607.pdf) ([supplementary]()) was accepted to [BMVC 2022](https://bmvc2022.mpi-inf.mpg.de/607/).
+The [paper](https://bmvc2022.mpi-inf.mpg.de/0607.pdf) ([supplementary](https://docs.google.com/viewer?url=https://github.com/glami/glami-1m/raw/main/media/GLAMI-1M%20Supplementary.pdf)) published at [BMVC 2022](https://bmvc2022.mpi-inf.mpg.de/607/).
 The paper will be accessible soon on Arxiv as well.
+
 
 
 ## How to Download GLAMI-1M Manually
@@ -58,3 +59,17 @@ Weights for the baseline models described in the paper are available [here](http
 # Examples
 
 ![GLAMI-1M Dataset Examples Table](media/glami-1m-dataset-examples-table.png)
+
+
+# Citation
+
+```bibtex
+@inproceedings{Kosar_2022_BMVC,
+author    = {Vaclav Kosar and Antonín Hoskovec and Milan Šulc and Radek Bartyzal},
+title     = {GLAMI-1M: A Multilingual Image-Text Fashion Dataset},
+booktitle = {33rd British Machine Vision Conference 2022, {BMVC} 2022, London, UK, November 21-24, 2022},
+publisher = {{BMVA} Press},
+year      = {2022},
+url       = {https://bmvc2022.mpi-inf.mpg.de/0607.pdf}
+}
+```
