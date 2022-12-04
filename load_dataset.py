@@ -7,7 +7,8 @@ import pandas as pd
 
 DATASET_URL = os.environ.get("DATASET_URL", "https://zenodo.org/record/7326406/files/GLAMI-1M-dataset.zip?download=1")
 EXTRACT_DIR = os.environ.get("EXTRACT_DIR", "/tmp/GLAMI-1M")
-DATASET_DIR = dataset_dir = EXTRACT_DIR + "/GLAMI-1M-dataset"
+DATASET_SUBDIR = "GLAMI-1M-dataset"
+DATASET_DIR = dataset_dir = EXTRACT_DIR + "/" + DATASET_SUBDIR
 MODEL_DIR = os.environ.get("MODEL_DIR", "/tmp/GLAMI-1M/models")
 EMBS_DIR = EXTRACT_DIR + "/embs"
 CLIP_VISUAL_EMBS_DIR = EXTRACT_DIR + "/embs-clip-visual"
@@ -59,7 +60,7 @@ def download_dataset(extract_dir=EXTRACT_DIR, dataset_url=DATASET_URL):
     This at the same time prevets disk overflow.
     """
 
-    if not os.path.exists(extract_dir):
+    if not os.path.exists(extract_dir + '/' + DATASET_SUBDIR):
         assert dataset_url is not None, f"Dataset URL is required"
         with TemporaryFile() as zf:
             http_get(dataset_url, zf)
@@ -71,7 +72,7 @@ def download_dataset(extract_dir=EXTRACT_DIR, dataset_url=DATASET_URL):
                     f._extract_member(zipinfo, extract_dir, None)
 
     else:
-        print("Extract dir already exists. Delete it to re-download.")
+        print("Dataset sub directory already exists in the extract dir. Delete it to re-download.")
 
 
 def get_dataframe(split_type: str, dataset_dir=DATASET_DIR):
