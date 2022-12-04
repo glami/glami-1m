@@ -44,8 +44,7 @@ def calc_accuracy(X: np.ndarray, Y: np.ndarray, ks=(1, 5)):
     return accs
 
 
-def load_embeddings(df: pd.DataFrame, embs_dir=CLIP_VISUAL_EMBS_DIR) -> np.ndarray:
-    batch_size = 1024
+def load_embeddings(df: pd.DataFrame, embs_dir=CLIP_VISUAL_EMBS_DIR, vector_normalize=True, batch_size=1024) -> np.ndarray:
     arrays = []
 
     for batch_df in tqdm(
@@ -53,11 +52,13 @@ def load_embeddings(df: pd.DataFrame, embs_dir=CLIP_VISUAL_EMBS_DIR) -> np.ndarr
             total=int(np.ceil(len(df) / batch_size)),
     ):
         embeddings_array = load_batch_embeddings(embs_dir, batch_df)
-        embeddings_array = normalize(embeddings_array)
+        if vector_normalize:
+            embeddings_array = normalize(embeddings_array)
+
         arrays.append(embeddings_array)
 
-    embeddings_array = np.concatenate(arrays)
-    return embeddings_array
+    full_array = np.concatenate(arrays)
+    return full_array
 
 
 def load_batch_embeddings(feature_emb_dir: str, batch: pd.DataFrame):
