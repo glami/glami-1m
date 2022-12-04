@@ -9,7 +9,7 @@ from load_dataset import (
 import pandas as pd
 import numpy as np
 from torch.utils.data import DataLoader
-from embracenet_utils import EmbraceDataset, EmbraceConfig, EmbraceNetTrimodalClassifier, save_embracenet
+from classification.embracenet_utils import EmbraceDataset, EmbraceConfig, EmbraceNetTrimodalClassifier, save_embracenet
 import torch
 from tqdm import tqdm
 
