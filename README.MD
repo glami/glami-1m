@@ -8,7 +8,6 @@ We introduce GLAMI-1M: the largest multilingual image-text classification datase
 ## GLAMI-1M Paper
 
 The [paper](https://bmvc2022.mpi-inf.mpg.de/0607.pdf) (with [supplementary](https://docs.google.com/viewer?url=https://github.com/glami/glami-1m/raw/main/media/GLAMI-1M%20Supplementary.pdf)) was published at [BMVC 2022](https://bmvc2022.mpi-inf.mpg.de/607/).
-
 On The Papers with Code, we set up [multilingual image-text classification benchmark](https://paperswithcode.com/sota/multi-lingual-image-text-classification-on).
 
 If you use or reference the dataset, please use the following BibTex entry to cite the paper:
@@ -28,11 +27,25 @@ url       = {https://bmvc2022.mpi-inf.mpg.de/0607.pdf}
 
 
 ## How to Download GLAMI-1M Manually
-You can either manually download the dataset zip file yourself or use the repository scripts to download, extract, and load into a dataframe.
+You can either manually download the dataset zip file yourself or [use the repository scripts to download, extract, and load into a dataframe](#how-to-download-glami-1m-programmatically).
 
 To manually download the dataset ZIP file(s):
-- [GLAMI-1M Dataset (the default 228x298 version) here (1 zip  file of 11GB)](https://zenodo.org/record/7326406/files/GLAMI-1M-dataset.zip?download=1)
+- [GLAMI-1M Dataset (the default 228x298 version) here (1 zip  file of 11GB)](https://zenodo.org/record/7326406/files/GLAMI-1M-dataset.zip?download=1).
+  - You can use following commands to download this dataset file manually:
+  ```
+  wget -O GLAMI-1M-dataset.zip https://zenodo.org/record/7326406/files/GLAMI-1M-dataset.zip?download=1
+  ```
+  - Calculate md5 hash with: 
+  ```
+  md5sum GLAMI-1M-dataset.zip
+  ```
+  - Then check that it returns:
+  ```
+  500348bbf54595db81cba353acd50d78  GLAMI-1M-dataset.zip
+  ```
+ 
 - [GLAMI-1M Dataset 800x800 version here (11 zip files of 54GB)](https://zenodo.org/record/7338792)
+  (See Zenodo for md5 hashes)
 
 
 ## GLAMI-1M Code
@@ -50,7 +63,7 @@ pip install -r requirements.txt
 
 ### How to Download GLAMI-1M Programmatically
 
-The dataset can be downloaded programmatically with the default 228x298 version.
+The 228x298 dataset version can be downloaded programmatically using repository Python code.
 The destination directory to download and extract the dataset can be configured with environmental variable EXTRACT_DIR.
 EXTRACT_DIR is by default configured as a Linux temporary directory, which is removed upon machine restarts.
 Before downloading the dataset, make sure you have enough space to download and unzip corresponding version of the dataset.
