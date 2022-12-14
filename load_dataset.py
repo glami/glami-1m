@@ -1,8 +1,12 @@
+import copy
+import logging
 import os
 import zipfile
 from tempfile import TemporaryFile
+from typing import BinaryIO, Optional, Dict
+
+import requests
 from tqdm import tqdm
-from transformers.file_utils import http_get
 import pandas as pd
 
 DATASET_URL = os.environ.get("DATASET_URL", "https://zenodo.org/record/7326406/files/GLAMI-1M-dataset.zip?download=1")
@@ -48,6 +52,36 @@ COUNTRY_CODE_TO_COUNTRY_NAME = {
 }
 
 COUNTRY_CODE_TO_COUNTRY_NAME_W_CC = {name + f' ({cc})' for cc, name in COUNTRY_CODE_TO_COUNTRY_NAME}
+
+
+def http_get(url: str, temp_file: BinaryIO, proxies=None, resume_size=0, headers: Optional[Dict[str, str]] = None):
+    """
+    Download remote file. Do not gobble up errors.
+
+    This function was adopted from Huggingface `transformers.file_utils.http_get` with following licence:
+    Copyright 2020 The HuggingFace Team, the AllenNLP library authors. All rights reserved.
+    Licensed under the Apache License, Version 2.0 (the "License");
+    """
+    headers = copy.deepcopy(headers)
+    if resume_size > 0:
+        headers["Range"] = f"bytes={resume_size}-"
+    r = requests.get(url, stream=True, proxies=proxies, headers=headers)
+    r.raise_for_status()
+    content_length = r.headers.get("Content-Length")
+    total = resume_size + int(content_length) if content_length is not None else None
+    progress = tqdm(
+        unit="B",
+        unit_scale=True,
+        total=total,
+        initial=resume_size,
+        desc="Downloading",
+        disable=bool(logging.get_verbosity() == logging.NOTSET),
+    )
+    for chunk in r.iter_content(chunk_size=1024):
+        if chunk:  # filter out keep-alive new chunks
+            progress.update(len(chunk))
+            temp_file.write(chunk)
+    progress.close()
 
 
 def download_dataset(extract_dir=EXTRACT_DIR, dataset_url=DATASET_URL):
