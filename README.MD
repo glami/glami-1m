@@ -55,10 +55,14 @@ The model weights will be uploaded soon.
 
 ### Installation
 
+Below are steps to get minimal installation to be able to download the dataset with Python
 ```
 conda create -n g1m python=3.9
 conda activate g1m
-pip install -r requirements.txt
+
+git clone https://github.com/glami/glami-1m.git
+cd glami-1m
+pip install -r requirements_minimal.txt
 ```
 
 ### How to Download GLAMI-1M Programmatically
@@ -81,6 +85,12 @@ EXTRACT_DIR="/tmp/GLAMI-1M/" python -c 'import load_dataset; print(load_dataset.
 
 ### Baseline Weights
 
+To fully produce all code in the repository install all requirements via:
+```
+pip install requirements.txt
+```
+
+The code is available in folders `classification`, `image-to-text`, and `translation`.
 Weights for the baseline models described in the paper are available [here](https://zenodo.org/record/7353512).
 
 
