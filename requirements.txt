@@ -1,7 +1,7 @@
-numpy~=1.20.0
+numpy~=1.22
 pandas==1.4.3
 scipy==1.8.1
-torch==1.10.1
+torch==1.13.1
 torchvision==0.11.2
 # transformers==4.16.2
 transformers==4.8.1  # Needed for M-CLIP Text embeddings
