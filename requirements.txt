@@ -1,6 +1,7 @@
+# Horrible  Numpy versioning pains. Exceptions: numpy 1.24 -> missing _no_nep50_warning, 1.21 -> missing _private
 numpy~=1.22
 pandas==1.4.3
-scipy==1.8.1
+scipy==1.10.0
 torch==1.13.1
 torchvision
 # transformers==4.16.2
@@ -17,5 +18,5 @@ git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1
 # open_clip_torch==2.11.1
 
 scann==1.2.6
-notebook==6.4.12
+# notebook==6.4.12
 matplotlib==3.3.3

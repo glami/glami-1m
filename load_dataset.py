@@ -17,6 +17,8 @@ MODEL_DIR = os.environ.get("MODEL_DIR", "/tmp/GLAMI-1M/models")
 EMBS_DIR = EXTRACT_DIR + "/embs"
 CLIP_VISUAL_EMBS_DIR = EXTRACT_DIR + "/embs-clip-visual"
 CLIP_TEXTUAL_EMBS_DIR = EXTRACT_DIR + "/embs-clip-textual"
+# CLIP_VISUAL_EMBS_DIR = EXTRACT_DIR + "/embs-clip-l5b-visual"
+# CLIP_TEXTUAL_EMBS_DIR = EXTRACT_DIR + "/embs-clip-l5b-textual"
 CLIP_EN_TEXTUAL_EMBS_DIR = EXTRACT_DIR + "/embs-clip-en-textual"
 GENERATED_DIR = EXTRACT_DIR + "/generated_images"
 
