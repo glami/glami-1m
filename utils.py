@@ -1,4 +1,5 @@
 import base64
+from typing import Optional, List
 
 import numpy as np
 import pandas as pd
@@ -75,10 +76,13 @@ def image_formatter(img_file):
         return f'<img width="150" src="data:image/png;base64,{encoded_string}">'
 
 
-def public_dataset_to_html(df: pd.DataFrame):
+def public_dataset_to_html(df: pd.DataFrame, extra_cols: Optional[List[str]]=None):
+    if extra_cols is None:
+        extra_cols = []
+
     return display(
         HTML(
-            df[[COL_NAME_ITEM_ID, COL_NAME_IMAGE_FILE] + [COL_NAME_NAME, COL_NAME_DESCRIPTION, COL_NAME_CAT_NAME]].to_html(
+            df[[COL_NAME_ITEM_ID, COL_NAME_IMAGE_FILE] + [COL_NAME_NAME, COL_NAME_DESCRIPTION, COL_NAME_CAT_NAME] + extra_cols].to_html(
                 formatters={
                     COL_NAME_IMAGE_FILE: image_formatter,
                 },
