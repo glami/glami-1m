@@ -30,10 +30,10 @@ url       = {https://bmvc2022.mpi-inf.mpg.de/0607.pdf}
 You can either manually download the dataset zip file yourself or [use the repository scripts to download, extract, and load into a dataframe](#how-to-download-glami-1m-programmatically).
 
 To manually download the dataset ZIP file(s):
-- [GLAMI-1M Dataset (the default 228x298 version) here (1 zip  file of 11GB)](https://zenodo.org/record/7326406/files/GLAMI-1M-dataset.zip?download=1).
+- [GLAMI-1M Dataset (the default 228x298 version) here (1 zip  file of 11GB)](https://huggingface.co/datasets/glami/glami-1m/resolve/main/GLAMI-1M-dataset.zip).
   - You can use following commands to download this dataset file manually:
   ```
-  wget -O GLAMI-1M-dataset.zip https://zenodo.org/record/7326406/files/GLAMI-1M-dataset.zip?download=1
+  wget -O GLAMI-1M-dataset.zip https://huggingface.co/datasets/glami/glami-1m/resolve/main/GLAMI-1M-dataset.zip
   ```
   - Calculate md5 hash with: 
   ```
