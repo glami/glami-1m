@@ -14,6 +14,7 @@ from load_dataset import (
 from utils import chunker
 import numpy as np
 import torch
+# import open_clip
 import clip
 from PIL import Image
 
@@ -28,6 +29,8 @@ if __name__ == "__main__":
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model, preprocess = clip.load("ViT-B/32", device=device)
+    # checkpoint = 'xlm-roberta-base-ViT-B-32'
+    # model, _, preprocess = open_clip.create_model_and_transforms(checkpoint, pretrained='laion5b_s13b_b90k')
 
     def clip_encode(image_paths: str, ):
         images = []

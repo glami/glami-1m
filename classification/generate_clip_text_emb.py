@@ -58,6 +58,7 @@ if __name__ == "__main__":
 
     def encode(texts: list[str]):
         with torch.no_grad():
+            # In order to limit the context for fair comparison to EmbraceNet:
             txt_tok = tokenizer.batch_encode_plus(texts, padding="max_length", return_tensors='pt', max_length=MAX_LENGTH, truncation=True)
             input_ids = txt_tok.input_ids.cuda()
             attn_mask = txt_tok.attention_mask.cuda()
