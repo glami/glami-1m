@@ -9,7 +9,7 @@ We introduce GLAMI-1M: the largest multilingual image-text classification datase
 
 - The [paper](https://bmvc2022.mpi-inf.mpg.de/0607.pdf) (with [supplementary](https://docs.google.com/viewer?url=https://github.com/glami/glami-1m/raw/main/media/GLAMI-1M%20Supplementary.pdf)) was published at [BMVC 2022](https://bmvc2022.mpi-inf.mpg.de/607/).
 - On [The Papers with Code, we set up multilingual image-text classification benchmark](https://paperswithcode.com/paper/glami-1m-a-multilingual-image-text-fashion-1).
-- [Colab notebook](https://colab.research.google.com/drive/16gMqVqUpleacU5z9Y_7f3c-7I0C45esy?usp=sharing) within Google, and also in this repository. 
+- [Colab notebook](https://colab.research.google.com/drive/16gMqVqUpleacU5z9Y_7f3c-7I0C45esy?usp=sharing) within Google, and also in this repository. [A video recording walk through](https://youtu.be/jLFJObPWU1U) the code is here.
 
 If you use or reference the dataset, please use the following BibTex entry to cite the paper:
 
