@@ -117,7 +117,7 @@ def get_dataframe(split_type: str, dataset_dir=DATASET_DIR):
     df[COL_NAME_IMAGE_FILE] = dataset_dir + "/images/" + df[COL_NAME_IMAGE_ID].astype(str) + ".jpg"
     df[COL_NAME_DESCRIPTION] = df[COL_NAME_DESCRIPTION].fillna('')
     assert os.path.exists(df.loc[0, COL_NAME_IMAGE_FILE])
-    return df[[COL_NAME_ITEM_ID, COL_NAME_IMAGE_ID, COL_NAME_NAME, COL_NAME_DESCRIPTION, COL_NAME_GEO, COL_NAME_CAT_NAME, COL_NAME_LABEL_SOURCE, COL_NAME_IMAGE_FILE]]
+    return df[[COL_NAME_ITEM_ID, COL_NAME_IMAGE_ID, COL_NAME_NAME, COL_NAME_DESCRIPTION, COL_NAME_GEO, COL_NAME_CATEGORY, COL_NAME_CAT_NAME, COL_NAME_LABEL_SOURCE, COL_NAME_IMAGE_FILE]]
 
 
 if __name__ == "__main__":
