@@ -25,7 +25,9 @@ url       = {https://bmvc2022.mpi-inf.mpg.de/0607.pdf}
 }
 ```
 
-
+### Google Colab Notebook
+Try hands-on exercise with the dataset in this [Google Colab notebook](https://colab.research.google.com/drive/16gMqVqUpleacU5z9Y_7f3c-7I0C45esy?usp=sharing).
+[![glami-1m-multilingual-image-text-dataset-text-vs-image-similarity](media/glami-1m-multilingual-image-text-dataset-text-vs-image-similarity.png)](https://colab.research.google.com/drive/16gMqVqUpleacU5z9Y_7f3c-7I0C45esy?usp=sharing)
 
 
 ## How to Download GLAMI-1M Manually
